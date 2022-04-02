@@ -1,0 +1,5 @@
+./*.bmp
+.idea
+.env
+tmp
+main
