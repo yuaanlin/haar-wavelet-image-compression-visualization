@@ -37,7 +37,7 @@ jobs:
         run: |-
           gcloud run deploy backend \
             --quiet \
-            --region "asia-east2" \
+            --region "asia-east1" \
             --image "asia.gcr.io/haar-visualization/backend" \
             --platform "managed" \
             --port 80 \
