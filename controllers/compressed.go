@@ -1,17 +1,15 @@
 package controllers
 
 import (
-	"bytes"
 	"github.com/gin-gonic/gin"
 	"github.com/ken20001207/image-compressor/haar"
+	"github.com/ken20001207/image-compressor/model"
 	"github.com/ken20001207/image-compressor/services"
 	"github.com/ken20001207/image-compressor/utils"
-	"image/jpeg"
 	"strconv"
 )
 
-func DownloadImage(c *gin.Context) {
-
+func CompressedController(c *gin.Context) {
 	// level means the number of haar transform
 	level := 2
 	if c.Query("level") != "" {
@@ -24,28 +22,6 @@ func DownloadImage(c *gin.Context) {
 			return
 		}
 		level = ls
-	}
-
-	// step means the number of transform step
-	step := 0
-	if c.Query("step") != "" {
-		s, _ := c.GetQuery("step")
-		ss, err := strconv.Atoi(s)
-		if err != nil {
-			c.JSON(400, gin.H{
-				"message": "step must be a number",
-			})
-			return
-		}
-		step = ss
-	}
-
-	if step < 0 {
-		step = 0
-	}
-
-	if step > level*4+1 {
-		step = level*4 + 1
 	}
 
 	ratio := 0
@@ -82,7 +58,7 @@ func DownloadImage(c *gin.Context) {
 	// execute haar transform to the specified step
 
 	s := 0
-	for s <= step {
+	for s <= level*2+1 {
 
 		// transform
 		if s != 0 && s < 2*level+1 {
@@ -99,37 +75,17 @@ func DownloadImage(c *gin.Context) {
 			haar.Compress(array, float64(ratio)/100)
 		}
 
-		// reverse
-		if s > 2*level+1 {
-			horizontal := s%2 == 1
-			if horizontal {
-				haar.ReverseHaarHorizontal(array, level-(s-level-1)/2+2)
-			} else {
-				haar.ReverseHaarVertical(array, level-(s-level)/2+2)
-			}
-		}
-
 		s++
 	}
 
 	utils.FixColorRange(array)
 
-	// encode result into jpeg for display
+	compressed := model.Compressed{}
+	compressed.FromRGB(array, level)
 
-	result := utils.Convert2DArrayToImage(array)
-	buf := new(bytes.Buffer)
-	err = jpeg.Encode(buf, result, nil)
-	if err != nil {
-		c.JSON(500, gin.H{
-			"message": err.Error(),
-		})
-		c.Abort()
-		return
-	}
-
-	c.Header("Content-Type", "image/jpeg")
-
-	_, err = c.Writer.Write(buf.Bytes())
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Disposition", "inline; filename=\""+c.Query("uid")+".compressed\"")
+	_, err = c.Writer.Write(compressed.Bytes())
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": err.Error(),

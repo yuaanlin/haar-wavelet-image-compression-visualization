@@ -19,10 +19,10 @@ func SaveImage(ctx context.Context, img *image.Image) (string, error) {
 		return "", err
 	}
 
-	uid := uuid.New()
+	uid := uuid.New().String()[:8]
 	send := buf.Bytes()
-	redis.GetClient().Set(ctx, uid.String(), send, 10*time.Minute)
-	return uid.String(), nil
+	redis.GetClient().Set(ctx, uid, send, 10*time.Minute)
+	return uid, nil
 }
 
 // GetImage : Get image from redis by uid
