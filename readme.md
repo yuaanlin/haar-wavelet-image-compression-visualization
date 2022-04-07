@@ -17,15 +17,15 @@ Post the image to the `/upload` endpoint with form field name `image`:
 ```bash
 curl -F "image=@origin.bmp" https://api.haar.linyuanlin.com/upload
 
-# > {"id":"e9b6a509-fca1-41b8-ab27-4201396097f1"}
+# > {"id":"e9b6a509"}
 ```
 
-You will get the id of the image (`e9b6a509-fca1-41b8-ab27-4201396097f1` in this example).
+You will get the id of the image (`e9b6a509` in this example).
 
 Then, you can use this id to get each step of the haar wavelet compression:
 
 ```bash
-curl "https://api.haar.linyuanlin.com/upload/download?uid=e9b6a509-fca1-41b8-ab27-4201396097f1" --output result.jpg
+curl "https://api.haar.linyuanlin.com/visualization?uid=e9b6a509" --output result.jpg
 ```
 
 The `result.jpg` is identical to the original image, because you don't specify the `step` option. Which means this is `step=0` (original image).
@@ -35,7 +35,7 @@ The `result.jpg` is identical to the original image, because you don't specify t
 If you want to see the compression result at step `1`, you can use the following command:
 
 ```bash
-curl "https://api.haar.linyuanlin.com/upload/download?uid=e9b6a509-fca1-41b8-ab27-4201396097f1&step=1" --output result.jpg
+curl "https://api.haar.linyuanlin.com/visualization?uid=e9b6a509&step=1" --output result.jpg
 ```
 
 You can see the result after first step of haar wavelet transform.
