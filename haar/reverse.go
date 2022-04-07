@@ -13,13 +13,13 @@ func ReverseHaarHorizontal(data [][]RGB, level int) {
 		for j := 0; j < width/2; j++ {
 			array2[i][2*j] = RGB{
 				R: data[i][j].R - data[i][width/2+j].R + 128,
-				G: data[i][j].R - data[i][width/2+j].G + 128,
-				B: data[i][j].R - data[i][width/2+j].B + 128,
+				G: data[i][j].G - data[i][width/2+j].G + 128,
+				B: data[i][j].B - data[i][width/2+j].B + 128,
 			}
 			array2[i][2*j+1] = RGB{
 				R: data[i][j].R + data[i][width/2+j].R - 128,
-				G: data[i][j].R + data[i][width/2+j].G - 128,
-				B: data[i][j].R + data[i][width/2+j].B - 128,
+				G: data[i][j].G + data[i][width/2+j].G - 128,
+				B: data[i][j].B + data[i][width/2+j].B - 128,
 			}
 		}
 	}
