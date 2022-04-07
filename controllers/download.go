@@ -91,19 +91,28 @@ func DownloadImage(c *gin.Context) {
 		s++
 	}
 
-	// 1 - haar.HaarHorizontal(array, 1)
-	// 2 - haar.Vertical(array, 1)
-	// 3 - haar.HaarHorizontal(array, 2)
-	// 4 - haar.Vertical(array, 2)
-	// 5 - haar.HaarHorizontal(array, 3)
-	// 6 - haar.Vertical(array, 3)
-	//haar.Compress(array, 0.1)
-	//haar.ReverseHaarVertical(array, 3)
-	//haar.ReverseHaarHorizontal(array, 3)
-	//haar.ReverseHaarVertical(array, 2)
-	//haar.ReverseHaarHorizontal(array, 2)
-	//haar.ReverseHaarVertical(array, 1)
-	//haar.ReverseHaarHorizontal(array, 1)
+	for i := 0; i < len(array); i++ {
+		for j := 0; j < len(array[i]); j++ {
+			if array[i][j].R < 0 {
+				array[i][j].R = 0
+			}
+			if array[i][j].R > 255 {
+				array[i][j].R = 255
+			}
+			if array[i][j].G < 0 {
+				array[i][j].G = 0
+			}
+			if array[i][j].G > 255 {
+				array[i][j].G = 255
+			}
+			if array[i][j].B < 0 {
+				array[i][j].B = 0
+			}
+			if array[i][j].B > 255 {
+				array[i][j].B = 255
+			}
+		}
+	}
 
 	// encode result into jpeg for display
 
