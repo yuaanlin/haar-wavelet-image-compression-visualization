@@ -48,6 +48,19 @@ func DownloadImage(c *gin.Context) {
 		step = level*4 + 1
 	}
 
+	ratio := 0
+	if c.Query("ratio") != "" {
+		s, _ := c.GetQuery("ratio")
+		ss, err := strconv.Atoi(s)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"message": "ratio must be a number",
+			})
+			return
+		}
+		ratio = ss
+	}
+
 	image, err := services.GetImage(c.Request.Context(), c.Query("uid"))
 	if err != nil {
 		c.JSON(404, gin.H{
@@ -83,7 +96,7 @@ func DownloadImage(c *gin.Context) {
 
 		// compress
 		if s == 2*level+1 {
-			haar.Compress(array, 0.1)
+			haar.Compress(array, float64(ratio)/100)
 		}
 
 		// reverse
