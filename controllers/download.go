@@ -40,6 +40,14 @@ func DownloadImage(c *gin.Context) {
 		step = ss
 	}
 
+	if step < 0 {
+		step = 0
+	}
+
+	if step > level*4+1 {
+		step = level*4 + 1
+	}
+
 	image, err := services.GetImage(c.Request.Context(), c.Query("uid"))
 	if err != nil {
 		c.JSON(404, gin.H{
