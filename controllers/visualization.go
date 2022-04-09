@@ -96,7 +96,7 @@ func VisualizationController(c *gin.Context) {
 
 		// compress
 		if s == 2*level+1 {
-			haar.Compress(array, float64(ratio)/100)
+			haar.Compress(array, float64(ratio)/100, level)
 		}
 
 		// reverse

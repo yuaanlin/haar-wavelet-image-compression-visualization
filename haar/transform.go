@@ -52,16 +52,22 @@ func Vertical(data [][]RGB, level int) {
 	utils.Copy2DArray(&data, &array2)
 }
 
-func Compress(array [][]RGB, percent float64) {
+func Compress(array [][]RGB, percent float64, level int) {
+	width, height := len(array[0])/int(math.Pow(2, float64(level))), len(array)/int(math.Pow(2, float64(level)))
 	limit := 128 * percent
 	for i, row := range array {
 		for j, pixel := range row {
+			if i < height && j < width {
+				continue
+			}
 			if pixel.R-128 > -1*int(limit) && pixel.R-128 < int(limit) {
-				array[i][j] = RGB{
-					R: 128,
-					G: 128,
-					B: 128,
-				}
+				array[i][j].R = 128
+			}
+			if pixel.G-128 > -1*int(limit) && pixel.G-128 < int(limit) {
+				array[i][j].G = 128
+			}
+			if pixel.B-128 > -1*int(limit) && pixel.B-128 < int(limit) {
+				array[i][j].B = 128
 			}
 		}
 	}
