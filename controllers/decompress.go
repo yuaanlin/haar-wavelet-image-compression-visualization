@@ -42,6 +42,8 @@ func DecompressController(c *gin.Context) {
 		}
 	}
 
+	utils.FixColorRange(array)
+
 	// encode result into jpeg for display
 
 	result := utils.Convert2DArrayToImage(array)
