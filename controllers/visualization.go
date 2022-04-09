@@ -103,9 +103,9 @@ func VisualizationController(c *gin.Context) {
 		if s > 2*level+1 {
 			horizontal := s%2 == 1
 			if horizontal {
-				haar.ReverseHaarHorizontal(array, level-(s-level-1)/2+2)
+				haar.ReverseHaarHorizontal(array, level-((s+1-level*2-1)/2-1))
 			} else {
-				haar.ReverseHaarVertical(array, level-(s-level)/2+2)
+				haar.ReverseHaarVertical(array, level-((s-level*2-1)/2))
 			}
 		}
 

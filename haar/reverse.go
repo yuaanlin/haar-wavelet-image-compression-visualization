@@ -3,10 +3,11 @@ package haar
 import (
 	. "github.com/ken20001207/image-compressor/model"
 	"github.com/ken20001207/image-compressor/utils"
+	"math"
 )
 
 func ReverseHaarHorizontal(data [][]RGB, level int) {
-	width, height := len(data[0])/level, len(data)/level
+	width, height := len(data[0])/int(math.Pow(2, float64(level-1))), len(data)/int(math.Pow(2, float64(level-1)))
 	array2 := make([][]RGB, len(data))
 	utils.Copy2DArray(&array2, &data)
 	for i := 0; i < height; i++ {
@@ -27,7 +28,7 @@ func ReverseHaarHorizontal(data [][]RGB, level int) {
 }
 
 func ReverseHaarVertical(data [][]RGB, level int) {
-	width, height := len(data[0])/level, len(data)/level
+	width, height := len(data[0])/int(math.Pow(2, float64(level-1))), len(data)/int(math.Pow(2, float64(level-1)))
 	array2 := make([][]RGB, len(data))
 	utils.Copy2DArray(&array2, &data)
 	for i := 0; i < width; i++ {
